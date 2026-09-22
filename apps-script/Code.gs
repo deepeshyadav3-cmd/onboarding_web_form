@@ -136,25 +136,14 @@ function doPost(e) {
                 try {
                   var folder = DriveApp.getFolderById(driveFolderId);
                   var savedFile = folder.createFile(blob);
-                  try {
-                    savedFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-                  } catch (shareErr) {
-                    Logger.log("Sharing permission warning: " + shareErr.toString());
-                  }
                   fileUrl = savedFile.getUrl();
                 } catch (folderErr) {
                   Logger.log("Folder access fallback to Drive root: " + folderErr.toString());
                   var defaultSaved = DriveApp.createFile(blob);
-                  try {
-                    defaultSaved.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-                  } catch (shareErr2) {}
                   fileUrl = defaultSaved.getUrl();
                 }
               } else {
                 var defaultSaved = DriveApp.createFile(blob);
-                try {
-                  defaultSaved.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-                } catch (shareErr3) {}
                 fileUrl = defaultSaved.getUrl();
               }
 

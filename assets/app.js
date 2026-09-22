@@ -329,13 +329,27 @@ async function handleFormSubmit(formEl) {
       console.log('[DEBUG] Outgoing Payload:', payload);
     }
 
-    setSubmitProgress('Uploading application to Google Sheets...');
+    const totalPayloadBytes = JSON.stringify(payload).length;
+    const totalPayloadMb = (totalPayloadBytes / (1024 * 1024)).toFixed(1);
+    setSubmitProgress(`Uploading application (${totalPayloadMb} MB)...`);
+
+    // Timer to update progress text if upload takes > 8 seconds
+    const progressTimer = setTimeout(() => {
+      setSubmitProgress('Saving resume to Google Drive & updating sheet...');
+    }, 8000);
+
+    const progressTimer2 = setTimeout(() => {
+      setSubmitProgress('Finalizing application entry...');
+    }, 18000);
 
     // 8. Submit via API Client
     const response = await submitFormPayload(appConfig.endpointUrl, payload, {
       submitTimeoutMs: appConfig.submitTimeoutMs || 60000,
       retryAttempts: appConfig.retryAttempts || 2
     });
+
+    clearTimeout(progressTimer);
+    clearTimeout(progressTimer2);
 
     if (window.location.search.includes('debug=1')) {
       console.log('[DEBUG] Response Data:', response);
