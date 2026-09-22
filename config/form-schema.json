@@ -291,7 +291,7 @@
             "application/msword",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           ],
-          "maxSizeMb": 10
+          "maxSizeMb": 7
         }
       ]
     }
