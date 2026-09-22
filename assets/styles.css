@@ -173,6 +173,14 @@ body {
   margin-top: 0.75rem;
 }
 
+.top-testing-bar {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* Draft Autosave Bar */
 .draft-notice-bar {
   background: #f0f9ff;

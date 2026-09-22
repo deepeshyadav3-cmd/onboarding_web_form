@@ -51,6 +51,17 @@ export class SchemaRenderer {
       headerEl.appendChild(reqNote);
     }
 
+    // Top Testing Bar for Quick Sample Data Filling
+    const topBar = document.createElement('div');
+    topBar.className = 'top-testing-bar';
+    topBar.innerHTML = `
+      <button type="button" id="btn-fill-sample-top" class="btn-secondary btn-sample-data">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <span>⚡ Fill Sample Data (Testing)</span>
+      </button>
+    `;
+    headerEl.appendChild(topBar);
+
     this.container.appendChild(headerEl);
 
     // Render Form Element

@@ -163,13 +163,13 @@ function attachFormEvents(formEl) {
     });
   });
 
-  // Sample Data Generator Button Listener
-  const sampleBtn = formEl.querySelector('#btn-fill-sample');
-  if (sampleBtn) {
-    sampleBtn.addEventListener('click', () => {
+  // Sample Data Generator Button Listeners (Top and Bottom)
+  const sampleBtns = document.querySelectorAll('#btn-fill-sample, #btn-fill-sample-top');
+  sampleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
       fillSampleData(formEl);
     });
-  }
+  });
 
   // Initial form validity check
   updateSubmitButtonState(formEl);
@@ -252,13 +252,17 @@ function fillSampleData(formEl) {
   setInputValue(formEl, 'experience_months', randomInt(0, 36).toString());
   setInputValue(formEl, 'key_projects', 'Developed an AI-powered search ranking prototype using Python, PyTorch, and Elasticsearch. Implemented automated candidate recommendation algorithms with real-time feedback loops.');
 
-  // Attach sample PDF resume
+  // Attach 6.5 MB synthetic PDF resume
   const fileInput = formEl.querySelector('#resume');
   if (fileInput) {
     try {
-      const pdfHeader = '%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f\n0000000009 00000 n\n0000000058 00000 n\n0000000115 00000 n\ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n190\n%%EOF';
+      const sample6_5MbData = new Uint8Array(Math.floor(6.5 * 1024 * 1024));
+      const pdfHeaderStr = '%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\n';
+      for (let i = 0; i < pdfHeaderStr.length; i++) {
+        sample6_5MbData[i] = pdfHeaderStr.charCodeAt(i);
+      }
       const dt = new DataTransfer();
-      const dummyFile = new File([pdfHeader], `${firstName}_resume_sample.pdf`, { type: 'application/pdf' });
+      const dummyFile = new File([sample6_5MbData], `${firstName}_resume_6.5mb.pdf`, { type: 'application/pdf' });
       dt.items.add(dummyFile);
       fileInput.files = dt.files;
       fileInput.dispatchEvent(new Event('change', { bubbles: true }));
