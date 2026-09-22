@@ -337,7 +337,7 @@ export class SchemaRenderer {
 
   renderFileInput(field) {
     const container = document.createElement('div');
-    container.className = 'file-input-container';
+    container.className = 'file-dropzone-wrapper';
 
     const input = document.createElement('input');
     input.type = 'file';
@@ -347,22 +347,38 @@ export class SchemaRenderer {
     if (field.accept) input.accept = field.accept.join(',');
     if (field.required) input.required = true;
 
-    const fileCustomBtn = document.createElement('label');
-    fileCustomBtn.htmlFor = field.id;
-    fileCustomBtn.className = 'file-upload-btn';
-    fileCustomBtn.innerHTML = `
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-      <span>Choose File</span>
+    const dropzone = document.createElement('label');
+    dropzone.htmlFor = field.id;
+    dropzone.className = 'file-dropzone';
+    dropzone.id = `dropzone-${field.id}`;
+    dropzone.innerHTML = `
+      <div class="dropzone-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      </div>
+      <div class="dropzone-text">
+        <span class="dropzone-prompt"><strong>Click to upload</strong> or drag and drop resume</span>
+        <span class="dropzone-hint">${field.accept ? field.accept.join(', ').toUpperCase() : 'PDF, DOC, DOCX'} (Max ${field.maxSizeMb || 7} MB)</span>
+      </div>
     `;
 
-    const fileNameDisplay = document.createElement('span');
-    fileNameDisplay.className = 'file-name-display';
-    fileNameDisplay.id = `file-name-${field.id}`;
-    fileNameDisplay.textContent = 'No file chosen';
+    const filePreview = document.createElement('div');
+    filePreview.className = 'file-preview-card';
+    filePreview.id = `file-preview-${field.id}`;
+    filePreview.style.display = 'none';
+    filePreview.innerHTML = `
+      <div class="file-info-wrapper">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        <div class="file-text-details">
+          <span class="file-name-text"></span>
+          <span class="file-size-badge"></span>
+        </div>
+      </div>
+      <button type="button" class="btn-remove-file" title="Remove file">&times;</button>
+    `;
 
     container.appendChild(input);
-    container.appendChild(fileCustomBtn);
-    container.appendChild(fileNameDisplay);
+    container.appendChild(dropzone);
+    container.appendChild(filePreview);
 
     return container;
   }
@@ -406,17 +422,77 @@ export class SchemaRenderer {
           if (target.checked) otherInput.focus();
         }
       } else if (target.type === 'file') {
-        const display = formEl.querySelector(`#file-name-${target.id}`);
-        if (display) {
-          if (target.files && target.files.length > 0) {
-            const sizeMb = (target.files[0].size / (1024 * 1024)).toFixed(2);
-            display.textContent = `${target.files[0].name} (${sizeMb} MB)`;
-          } else {
-            display.textContent = 'No file chosen';
-          }
-        }
+        this.updateFilePreview(formEl, target);
       }
     });
+
+    // File Drag & Drop handlers
+    formEl.querySelectorAll('.file-dropzone').forEach(dropzone => {
+      const inputId = dropzone.getAttribute('for');
+      const fileInput = formEl.querySelector(`#${inputId}`);
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('is-dragover');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('is-dragover');
+        }, false);
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        if (dt.files && dt.files.length > 0 && fileInput) {
+          fileInput.files = dt.files;
+          this.updateFilePreview(formEl, fileInput);
+          fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    });
+
+    // File Remove buttons
+    formEl.querySelectorAll('.btn-remove-file').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const previewCard = btn.closest('.file-preview-card');
+        const container = btn.closest('.file-dropzone-wrapper');
+        if (container && previewCard) {
+          const fileInput = container.querySelector('input[type="file"]');
+          const dropzone = container.querySelector('.file-dropzone');
+          if (fileInput) fileInput.value = '';
+          previewCard.style.display = 'none';
+          if (dropzone) dropzone.style.display = 'flex';
+        }
+      });
+    });
+  }
+
+  updateFilePreview(formEl, fileInput) {
+    const container = fileInput.closest('.file-dropzone-wrapper');
+    if (!container) return;
+
+    const dropzone = container.querySelector('.file-dropzone');
+    const previewCard = container.querySelector('.file-preview-card');
+    const nameEl = previewCard?.querySelector('.file-name-text');
+    const sizeEl = previewCard?.querySelector('.file-size-badge');
+
+    if (fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+      if (nameEl) nameEl.textContent = file.name;
+      if (sizeEl) sizeEl.textContent = `${sizeMb} MB`;
+      if (dropzone) dropzone.style.display = 'none';
+      if (previewCard) previewCard.style.display = 'flex';
+    } else {
+      if (previewCard) previewCard.style.display = 'none';
+      if (dropzone) dropzone.style.display = 'flex';
+    }
   }
 }
 

@@ -363,12 +363,9 @@ body {
   cursor: not-allowed;
 }
 
-/* File Input Custom Picker */
-.file-input-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+/* File Input Custom Drag & Drop Picker */
+.file-dropzone-wrapper {
+  margin-top: 0.35rem;
 }
 
 .file-control-hidden {
@@ -382,31 +379,112 @@ body {
   border: 0;
 }
 
-.file-upload-btn {
-  display: inline-flex;
+.file-dropzone {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.25rem;
-  background: var(--primary-light);
-  color: var(--primary-color);
-  border: 1.5px dashed var(--primary-border);
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: 0.9rem;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.75rem 1.25rem;
+  background: var(--input-bg);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
   cursor: pointer;
+  text-align: center;
   transition: all 0.2s ease;
 }
 
-.file-upload-btn:hover {
-  background: var(--primary-color);
-  color: #ffffff;
-  border-style: solid;
+.file-dropzone:hover,
+.file-dropzone.is-dragover {
+  background: var(--primary-light);
+  border-color: var(--primary-color);
 }
 
-.file-name-display {
-  font-size: 0.875rem;
+.dropzone-icon {
+  color: var(--primary-color);
+  background: #ffffff;
+  padding: 0.6rem;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropzone-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dropzone-prompt {
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.dropzone-prompt strong {
+  color: var(--primary-color);
+}
+
+.dropzone-hint {
+  font-size: 0.8rem;
   color: var(--text-muted);
-  font-weight: 500;
+}
+
+.file-preview-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  background: var(--primary-light);
+  border: 1.5px solid var(--primary-border);
+  border-radius: var(--radius-md);
+  margin-top: 0.25rem;
+}
+
+.file-info-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--primary-color);
+  overflow: hidden;
+}
+
+.file-text-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.file-name-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size-badge {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+}
+
+.btn-remove-file {
+  background: none;
+  border: none;
+  font-size: 1.35rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-file:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error-color);
 }
 
 /* Validation Error State */

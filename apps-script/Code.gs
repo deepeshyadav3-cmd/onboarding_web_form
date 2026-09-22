@@ -120,9 +120,10 @@ function doPost(e) {
       var lastCol = Math.max(sheet.getLastColumn(), 1);
       var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
 
-      // Handle File Uploads (Resume)
+      // Handle File Uploads (Resume) - STRICT TRANSACTIONAL POLICY
       if (payload.files && payload.files.length > 0) {
-        payload.files.forEach(function(fileItem) {
+        for (var i = 0; i < payload.files.length; i++) {
+          var fileItem = payload.files[i];
           if (fileItem.dataBase64 && fileItem.sheetColumn) {
             try {
               var candidateName = answers["Candidate Full Name"] || "Candidate";
@@ -156,13 +157,24 @@ function doPost(e) {
                 } catch (shareErr3) {}
                 fileUrl = defaultSaved.getUrl();
               }
+
+              if (!fileUrl) {
+                throw new Error("Failed to generate file URL");
+              }
+
               answers[fileItem.sheetColumn] = fileUrl;
             } catch (fileErr) {
               Logger.log("File upload error: " + fileErr.toString());
-              answers[fileItem.sheetColumn] = "Error uploading file: " + fileErr.message;
+              // ABORT TRANSACTION: Do not write row to Google Sheet if file upload fails!
+              return jsonResponse({
+                ok: false,
+                status: 500,
+                code: "FILE_UPLOAD_FAILED",
+                message: "Failed to upload resume file to Google Drive: " + fileErr.message + ". Application was NOT saved. Please try again."
+              });
             }
           }
-        });
+        }
       }
 
       // Timestamp
