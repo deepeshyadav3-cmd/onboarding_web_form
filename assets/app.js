@@ -116,23 +116,76 @@ function renderHoneypot(formEl, config) {
 }
 
 function attachFormEvents(formEl) {
-  // Live validation on blur
-  formEl.addEventListener('focusout', (e) => {
-    const target = e.target;
-    if (!target || !target.id) return;
+  // Pre-fill NA for pg_college_other if pg_college is not "Others"
+  const pgCollegeSelect = formEl.querySelector('#pg_college');
+  const pgCollegeOtherInput = formEl.querySelector('#pg_college_other');
 
-    // Find field schema
-    const field = findFieldSchema(target.id);
-    if (!field) return;
+  if (pgCollegeSelect && pgCollegeOtherInput) {
+    const handlePgCollegeChange = () => {
+      const selectedVal = pgCollegeSelect.value;
+      if (selectedVal && selectedVal !== 'Others') {
+        pgCollegeOtherInput.value = 'NA';
+        pgCollegeOtherInput.setAttribute('readonly', 'readonly');
+        pgCollegeOtherInput.classList.add('auto-na-filled');
+        validateAndShowError(formEl, findFieldSchema('pg_college_other'));
+      } else if (selectedVal === 'Others') {
+        pgCollegeOtherInput.removeAttribute('readonly');
+        pgCollegeOtherInput.classList.remove('auto-na-filled');
+        if (pgCollegeOtherInput.value === 'NA') {
+          pgCollegeOtherInput.value = '';
+        }
+        pgCollegeOtherInput.focus();
+        validateAndShowError(formEl, findFieldSchema('pg_college_other'));
+      }
+    };
 
-    validateAndShowError(formEl, field);
+    // Initial check
+    if (pgCollegeSelect.value && pgCollegeSelect.value !== 'Others') {
+      pgCollegeOtherInput.value = 'NA';
+      pgCollegeOtherInput.setAttribute('readonly', 'readonly');
+      pgCollegeOtherInput.classList.add('auto-na-filled');
+    }
+
+    pgCollegeSelect.addEventListener('change', handlePgCollegeChange);
+  }
+
+  // Real-time validation on input, change, and blur for immediate user feedback
+  ['input', 'change', 'focusout'].forEach(eventType => {
+    formEl.addEventListener(eventType, (e) => {
+      const target = e.target;
+      if (!target || !target.id) return;
+
+      const field = findFieldSchema(target.id);
+      if (!field) return;
+
+      validateAndShowError(formEl, field);
+      updateSubmitButtonState(formEl);
+    });
   });
+
+  // Initial form validity check
+  updateSubmitButtonState(formEl);
 
   // Submit Handler
   formEl.addEventListener('submit', async (e) => {
     e.preventDefault();
     await handleFormSubmit(formEl);
   });
+}
+
+function updateSubmitButtonState(formEl) {
+  const formValues = collectFormValues(formEl);
+  const filesMap = collectFilesMap(formEl);
+  const { isValid } = validateForm(appSchema, formValues, filesMap);
+
+  const submitBtn = formEl.querySelector('#submit-btn');
+  if (submitBtn && !submitBtn.disabled && submitBtn.dataset.submitting !== 'true') {
+    if (isValid) {
+      submitBtn.classList.remove('btn-form-invalid');
+    } else {
+      submitBtn.classList.add('btn-form-invalid');
+    }
+  }
 }
 
 function findFieldSchema(fieldId) {

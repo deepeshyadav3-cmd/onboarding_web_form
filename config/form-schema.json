@@ -281,7 +281,7 @@
         {
           "id": "resume",
           "label": "Upload your latest Resume/ CV",
-          "helpText": "Upload 1 supported file: PDF or document (.pdf, .doc, .docx). Max 10 MB.",
+          "helpText": "Upload 1 supported file: PDF or document (.pdf, .doc, .docx). Max 7 MB.",
           "sheetColumn": "Resume Link",
           "type": "file",
           "required": true,
