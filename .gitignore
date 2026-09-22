@@ -1,0 +1,12 @@
+# Node dependencies
+node_modules/
+npm-debug.log
+
+# System & OS Files
+.DS_Store
+Thumbs.db
+
+# Temporary test scripts
+.scratch/
+test_*.py
+init_headers.py

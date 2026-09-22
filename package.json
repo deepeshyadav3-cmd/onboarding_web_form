@@ -1,0 +1,10 @@
+{
+  "name": "onboarding-web-form",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Static Hiring Application Form served from GitHub Pages -> Google Sheets & Google Drive",
+  "scripts": {
+    "start": "python3 -m http.server 8000"
+  },
+  "license": "MIT"
+}

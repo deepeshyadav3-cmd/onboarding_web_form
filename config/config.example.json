@@ -1,0 +1,23 @@
+{
+  "endpointUrl": "https://script.google.com/macros/s/XXXXXXXX/exec",
+  "sharedToken": "",
+  "submitTimeoutMs": 60000,
+  "retryAttempts": 2,
+  "successMessage": "Thank you! Your application has been successfully submitted.",
+  "successRedirectUrl": "",
+  "showSubmissionId": true,
+  "saveDraftLocally": true,
+  "antiSpam": {
+    "honeypotField": "company_website",
+    "minFillSeconds": 3,
+    "recaptcha": {
+      "enabled": false,
+      "siteKey": ""
+    }
+  },
+  "branding": {
+    "logoUrl": "",
+    "primaryColor": "#00a699",
+    "footerText": "© 2026 IndiaMART InterMESH Ltd. All rights reserved."
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "title": "IndiaMART Management Campus Hiring 2027",
+  "description": "Join India's Largest B2B Marketplace and a one-stop expert solution for all business needs, empowering 82 lakh suppliers by connecting them with ~20.6 crore buyers across the nation.\n\nWe are looking for ambitious Management graduates to join our Team to build real-world intelligent systems that impact millions of users & solve for real time business Use-Cases.\n\nWe are hiring across multiple roles and domains. Shortlisted candidates will be contacted after the evaluation process.",
+  "links": [
+    { "label": "IndiaMART Corporate | India's Largest Online B2B Marketplace", "url": "https://corporate.indiamart.com/" },
+    { "label": "Job Description", "url": "https://docs.google.com/document/d/1v_Q5yiqao0US0BsiMaoZf4OFwa5tlkzl" }
+  ],
+  "requiredNote": "* Indicates required question",
+  "sections": [
+    {
+      "id": "candidate",
+      "title": "Candidate details",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "Candidate Full Name",
+          "sheetColumn": "Candidate Full Name",
+          "type": "text",
+          "required": true,
+          "maxLength": 120,
+          "placeholder": "Enter your full name as per official records"
+        },
+        {
+          "id": "contact_number",
+          "label": "Candidate Contact Number",
+          "sheetColumn": "Candidate Contact Number",
+          "type": "tel",
+          "required": true,
+          "pattern": "^[6-9]\\d{9}$",
+          "patternError": "Enter a valid 10-digit Indian mobile number",
+          "placeholder": "10-digit mobile number (e.g. 9876543210)"
+        },
+        {
+          "id": "personal_email",
+          "label": "Candidate Personal Email ID",
+          "sheetColumn": "Candidate Personal Email ID",
+          "type": "email",
+          "required": true,
+          "maxLength": 150,
+          "placeholder": "name@example.com"
+        },
+        {
+          "id": "positions",
+          "label": "Select the position(s) you are interested in applying for:",
+          "sheetColumn": "Positions Applied For",
+          "type": "checkbox",
+          "required": true,
+          "options": ["Assistant Product Manager (Product and Tech Verticals)"],
+          "allowOther": true,
+          "otherLabel": "Other:",
+          "joinWith": ", "
+        }
+      ]
+    },
+    {
+      "id": "academics_school",
+      "title": "Academics — school",
+      "fields": [
+        {
+          "id": "tenth_percentage",
+          "label": "10th Percentage (To calculate % from GPA, use board approved multiplying factor)",
+          "sheetColumn": "10th Percentage",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100,
+          "step": 0.01,
+          "placeholder": "e.g. 88.5"
+        },
+        {
+          "id": "twelfth_percentage",
+          "label": "12th Percentage (To calculate % from GPA, use board approved multiplying factor)",
+          "sheetColumn": "12th Percentage",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100,
+          "step": 0.01,
+          "placeholder": "e.g. 91.2"
+        }
+      ]
+    },
+    {
+      "id": "academics_ug",
+      "title": "Academics — graduation",
+      "fields": [
+        {
+          "id": "graduation_degree",
+          "label": "Graduation Degree",
+          "sheetColumn": "Graduation Degree",
+          "type": "radio",
+          "required": true,
+          "options": ["B.Tech./B.E. (CS/IT)", "B.Tech./B.E. (Non CS/IT)"],
+          "allowOther": true,
+          "otherLabel": "Other:"
+        },
+        {
+          "id": "ug_college",
+          "label": "UG College (Enter Full Name)",
+          "sheetColumn": "UG College",
+          "type": "text",
+          "required": true,
+          "maxLength": 200,
+          "placeholder": "Full name of your undergraduate institution"
+        },
+        {
+          "id": "ug_percentage",
+          "label": "UG percentage? (To calculate % from GPA, use university approved multiplying factor)",
+          "sheetColumn": "UG Percentage",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100,
+          "step": 0.01,
+          "placeholder": "e.g. 82.4"
+        },
+        {
+          "id": "ug_year_of_passing",
+          "label": "UG Year of Passing (YYYY)",
+          "sheetColumn": "UG Year of Passing",
+          "type": "number",
+          "required": true,
+          "min": 1980,
+          "max": 2030,
+          "step": 1,
+          "patternError": "Enter a 4-digit year, e.g. 2025",
+          "placeholder": "YYYY (e.g. 2025)"
+        }
+      ]
+    },
+    {
+      "id": "academics_pg",
+      "title": "Academics — post graduation",
+      "fields": [
+        {
+          "id": "entrance_percentile",
+          "label": "Percentile scored in CAT/ XAT/ SNAP/ NMAT (Eg: CAT - xx, XAT - yy)",
+          "sheetColumn": "Entrance Exam Percentile",
+          "type": "text",
+          "required": true,
+          "maxLength": 200,
+          "placeholder": "CAT - 95, XAT - 92"
+        },
+        {
+          "id": "pg_college",
+          "label": "Post Graduation College. Select Others, if not in list.",
+          "sheetColumn": "PG College",
+          "type": "select",
+          "required": true,
+          "placeholder": "Choose",
+          "options": [
+            "NIT Kurukshetra",
+            "NSUT",
+            "IIIT Raipur",
+            "Others"
+          ],
+          "otherTriggerValue": "Others"
+        },
+        {
+          "id": "pg_college_other",
+          "label": "If Others, provide Full Name of PG College (Fill NA if already selected above)",
+          "sheetColumn": "PG College (Others)",
+          "type": "text",
+          "required": true,
+          "maxLength": 200,
+          "placeholder": "NA"
+        },
+        {
+          "id": "pg_specialization",
+          "label": "Post Graduation Specialization",
+          "sheetColumn": "PG Specialization",
+          "type": "select",
+          "required": true,
+          "placeholder": "Choose",
+          "options": [
+            "Marketing",
+            "Product Management / Tech Verticals",
+            "General Management",
+            "Operations & Supply Chain",
+            "Finance",
+            "Human Resources",
+            "Systems / IT / Business Analytics",
+            "Others"
+          ]
+        },
+        {
+          "id": "pg_completion_year",
+          "label": "Post Graduation Completion Year (YYYY)",
+          "sheetColumn": "PG Completion Year",
+          "type": "number",
+          "required": true,
+          "min": 1980,
+          "max": 2035,
+          "step": 1,
+          "placeholder": "YYYY (e.g. 2027)"
+        },
+        {
+          "id": "pg_percentage",
+          "label": "Post Graduation percentage? (To calculate % from GPA, use university approved multiplying factor)",
+          "sheetColumn": "PG Percentage",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100,
+          "step": 0.01,
+          "placeholder": "e.g. 85.0"
+        }
+      ]
+    },
+    {
+      "id": "other_details",
+      "title": "Other details",
+      "fields": [
+        {
+          "id": "home_state",
+          "label": "Home Location (State)",
+          "sheetColumn": "Home Location (State)",
+          "type": "select",
+          "required": true,
+          "placeholder": "Choose",
+          "options": [
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chhattisgarh",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttar Pradesh",
+            "Uttarakhand",
+            "West Bengal",
+            "Andaman and Nicobar Islands",
+            "Chandigarh",
+            "Dadra and Nagar Haveli and Daman and Diu",
+            "Delhi",
+            "Jammu and Kashmir",
+            "Ladakh",
+            "Lakshadweep",
+            "Puducherry"
+          ]
+        },
+        {
+          "id": "experience_months",
+          "label": "Total Experience in Months (Pre MBA). Enter 0 if not applicable.",
+          "sheetColumn": "Total Experience (Months, Pre MBA)",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 600,
+          "step": 1,
+          "placeholder": "0"
+        },
+        {
+          "id": "key_projects",
+          "label": "Provide key projects details - AI/ML used to develop solutions or solve problems. [Project name, brief description, AI/ML technologies or tools used, link to the GitHub repository or live demo].",
+          "sheetColumn": "Key Projects (AI/ML)",
+          "type": "textarea",
+          "required": true,
+          "rows": 6,
+          "maxLength": 5000,
+          "placeholder": "Describe your key projects, technology stack, problem solved, and links..."
+        },
+        {
+          "id": "resume",
+          "label": "Upload your latest Resume/ CV",
+          "helpText": "Upload 1 supported file: PDF or document (.pdf, .doc, .docx). Max 10 MB.",
+          "sheetColumn": "Resume Link",
+          "type": "file",
+          "required": true,
+          "accept": [".pdf", ".doc", ".docx"],
+          "acceptMime": [
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          ],
+          "maxSizeMb": 10
+        }
+      ]
+    }
+  ]
+}
