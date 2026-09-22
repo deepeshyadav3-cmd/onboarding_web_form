@@ -87,6 +87,15 @@ export class SchemaRenderer {
     const actionsEl = document.createElement('div');
     actionsEl.className = 'form-actions';
 
+    const sampleBtn = document.createElement('button');
+    sampleBtn.type = 'button';
+    sampleBtn.id = 'btn-fill-sample';
+    sampleBtn.className = 'btn-secondary btn-sample-data';
+    sampleBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      <span>Fill Sample Data</span>
+    `;
+
     const submitBtn = document.createElement('button');
     submitBtn.type = 'submit';
     submitBtn.id = 'submit-btn';
@@ -95,6 +104,8 @@ export class SchemaRenderer {
       <span class="btn-spinner" aria-hidden="true" style="display:none;"></span>
       <span class="btn-text">Submit Application</span>
     `;
+
+    actionsEl.appendChild(sampleBtn);
     actionsEl.appendChild(submitBtn);
 
     formEl.appendChild(actionsEl);

@@ -503,7 +503,33 @@ body {
 /* Submit Actions */
 .form-actions {
   margin-top: 2rem;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  font-family: inherit;
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: var(--text-main);
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
 
 .btn-primary {
@@ -521,7 +547,7 @@ body {
   border-radius: var(--radius-md);
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 166, 153, 0.3);
-  transition: all 0.25 ease;
+  transition: all 0.25s ease;
 }
 
 .btn-primary:hover:not(:disabled) {

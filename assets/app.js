@@ -163,6 +163,14 @@ function attachFormEvents(formEl) {
     });
   });
 
+  // Sample Data Generator Button Listener
+  const sampleBtn = formEl.querySelector('#btn-fill-sample');
+  if (sampleBtn) {
+    sampleBtn.addEventListener('click', () => {
+      fillSampleData(formEl);
+    });
+  }
+
   // Initial form validity check
   updateSubmitButtonState(formEl);
 
@@ -171,6 +179,108 @@ function attachFormEvents(formEl) {
     e.preventDefault();
     await handleFormSubmit(formEl);
   });
+}
+
+function fillSampleData(formEl) {
+  const sampleNames = ["Rohan Sharma", "Priya Verma", "Ananya Gupta", "Amit Patel", "Siddharth Verma", "Kavya Nair"];
+  const sampleColleges = ["IIT Delhi", "IIT Bombay", "BITS Pilani", "NSUT Delhi", "DTU"];
+  const samplePgColleges = ["NSUT", "NIT Kurukshetra", "IIIT Raipur"];
+  const sampleStates = ["Delhi", "Maharashtra", "Karnataka", "Uttar Pradesh", "Haryana", "West Bengal"];
+  const sampleSpecs = ["Product Management / Tech Verticals", "Marketing", "Systems / IT / Business Analytics"];
+
+  const randomChoice = arr => arr[Math.floor(Math.random() * arr.length)];
+  const randomNum = (min, max, decimals = 2) => (Math.random() * (max - min) + min).toFixed(decimals);
+  const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const candidateName = randomChoice(sampleNames);
+  const firstName = candidateName.split(' ')[0].toLowerCase();
+  const lastName = candidateName.split(' ')[1].toLowerCase();
+  const phone = '98' + randomInt(10000000, 99999999);
+  const email = `${firstName}.${lastName}.${randomInt(10, 99)}@example.com`;
+
+  // Candidate info
+  setInputValue(formEl, 'full_name', candidateName);
+  setInputValue(formEl, 'contact_number', phone);
+  setInputValue(formEl, 'personal_email', email);
+
+  // Checkbox position
+  const posCheckbox = formEl.querySelector('input[name="positions[]"]');
+  if (posCheckbox) {
+    posCheckbox.checked = true;
+    posCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  // Academics - school
+  setInputValue(formEl, 'tenth_percentage', randomNum(85, 98));
+  setInputValue(formEl, 'twelfth_percentage', randomNum(86, 99));
+
+  // Academics - graduation
+  const gradRadios = formEl.querySelectorAll('input[name="graduation_degree"]');
+  if (gradRadios.length > 0) {
+    gradRadios[0].checked = true;
+    gradRadios[0].dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  setInputValue(formEl, 'ug_college', randomChoice(sampleColleges));
+  setInputValue(formEl, 'ug_percentage', randomNum(78, 95));
+  setInputValue(formEl, 'ug_year_of_passing', '2025');
+
+  // Academics - post graduation
+  setInputValue(formEl, 'entrance_percentile', `CAT - ${randomNum(95, 99, 1)}, XAT - ${randomNum(92, 98, 1)}`);
+
+  const pgCollegeSelect = formEl.querySelector('#pg_college');
+  if (pgCollegeSelect) {
+    pgCollegeSelect.value = randomChoice(samplePgColleges);
+    pgCollegeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  const pgSpecSelect = formEl.querySelector('#pg_specialization');
+  if (pgSpecSelect) {
+    pgSpecSelect.value = randomChoice(sampleSpecs);
+    pgSpecSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  setInputValue(formEl, 'pg_completion_year', '2027');
+  setInputValue(formEl, 'pg_percentage', randomNum(80, 95));
+
+  // Other details
+  const stateSelect = formEl.querySelector('#home_state');
+  if (stateSelect) {
+    stateSelect.value = randomChoice(sampleStates);
+    stateSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  setInputValue(formEl, 'experience_months', randomInt(0, 36).toString());
+  setInputValue(formEl, 'key_projects', 'Developed an AI-powered search ranking prototype using Python, PyTorch, and Elasticsearch. Implemented automated candidate recommendation algorithms with real-time feedback loops.');
+
+  // Attach sample PDF resume
+  const fileInput = formEl.querySelector('#resume');
+  if (fileInput) {
+    try {
+      const pdfHeader = '%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f\n0000000009 00000 n\n0000000058 00000 n\n0000000115 00000 n\ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n190\n%%EOF';
+      const dt = new DataTransfer();
+      const dummyFile = new File([pdfHeader], `${firstName}_resume_sample.pdf`, { type: 'application/pdf' });
+      dt.items.add(dummyFile);
+      fileInput.files = dt.files;
+      fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+    } catch (e) {
+      console.warn('Unable to create synthetic DataTransfer file', e);
+    }
+  }
+
+  // Validate all fields after filling
+  if (appSchema && appSchema.sections) {
+    appSchema.sections.forEach(s => s.fields.forEach(f => validateAndShowError(formEl, f)));
+  }
+  updateSubmitButtonState(formEl);
+}
+
+function setInputValue(formEl, fieldId, value) {
+  const el = formEl.querySelector(`#${fieldId}`);
+  if (el) {
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 }
 
 function updateSubmitButtonState(formEl) {
